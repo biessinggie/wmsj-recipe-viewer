@@ -7,7 +7,10 @@
 - 数据直接提取自模组文件（炼丹炉配方.xml / 炼器炉配方.xml / 物品合成.cr / Pill.cs 等）
 
 ## 访问
-部署为 GitHub Pages 后访问：https://<你的用户名>.github.io/<仓库名>/
+
+- 主站：https://wmsj-recipe.netlify.app/
+- 玩法说明直达：https://wmsj-recipe.netlify.app/#guide
+- GitHub Pages：https://biessinggie.github.io/wmsj-recipe-viewer/
 
 ## 数据更新
 模组更新后，用 wmsj-miniprogram/tools/ 下的脚本重新提取配方，替换本仓库的 index.html 即可。
