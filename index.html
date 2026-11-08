@@ -6,14 +6,14 @@
 <title>完美世界 Mod 配方查看器 · 炼丹/炼器/合成/材料大全</title>
 <meta name="description" content="完美世界Mod配方查询：炼丹丹方、炼器配方、工作台合成、材料大全、修为丹药；免费、手机可用。">
 <meta name="theme-color" content="#0e1116">
-<link rel="canonical" href="https://biessinggie.github.io/wmsj-recipe-viewer/">
+<link rel="canonical" href="https://wmsj-recipe.netlify.app/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e1116'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23d4a94e'%3E%E4%B8%B9%3C/text%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="完美世界 Mod 配方查看器">
 <meta property="og:title" content="完美世界 Mod 配方查看器">
 <meta property="og:description" content="炼丹丹方、炼器配方、工作台合成、材料大全、修为丹药；免费、手机可用。">
-<meta property="og:url" content="https://biessinggie.github.io/wmsj-recipe-viewer/">
-<meta property="og:image" content="https://biessinggie.github.io/wmsj-recipe-viewer/assets/og.png">
+<meta property="og:url" content="https://wmsj-recipe.netlify.app/">
+<meta property="og:image" content="https://wmsj-recipe.netlify.app/assets/og.png">
 <style>
   :root{
     --bg:#0e1116; --bg2:#151b23; --card:#1a222d; --card2:#202a38;
@@ -186,6 +186,12 @@
     0%,100%{box-shadow:0 0 10px rgba(224,80,80,.35);border-color:#ff7a7a}
     50%{box-shadow:0 0 26px rgba(224,80,80,.8);border-color:#ffb0b0}
   }
+  main > div[id]{scroll-margin-top:190px}
+  @media (max-width:620px){
+    main > div[id]{scroll-margin-top:240px}
+    nav{flex-wrap:wrap;overflow:visible;row-gap:6px}
+    nav button{flex:0 1 auto}
+  }
   @media (max-width:480px){
     .grid{grid-template-columns:1fr}
     h1{font-size:17px}
@@ -257,7 +263,7 @@
     数据提取自 <b>生存战争 · 完美世界 Mod（人界篇）API1.9 v26.4.19.1</b> 模组文件（炼丹炉配方.xml / 炼器炉配方.xml / 物品合成.cr / 修仙.dll / zh-CN.json / 完美世界介绍.xml）<br>
     模组作者：隐形守护者 及完美世界制作组 · 本工具仅作资料查阅，请支持正版模组（免费），禁止私自转载模组本体<br>
     若版本更新导致配方变动，可在游戏内「创造模式 → 丹方」查看最新数据<br>
-    🏗️ 网站搭建于 2026-08-23 ·
+    🏗️ 网站搭建于 2026-08-23 · 玩法说明更新于 2026-11-08 ·
     <span id="busuanzi_container_site_pv" style="display:none">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
     <span id="busuanzi_container_site_uv" style="display:none"> · 访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
   </div>
@@ -654,65 +660,170 @@ const materials = [
 const pills = ["聚气丹","引气丹","本源珠","辟谷丹","化瘀丹","练气丹","凝气丹","增气丹","培元丹","精元丹","凝元丹","活血丹","清心丹","筑基丹","广陵丹","玄元丹","融血丹","金丹","养魂丹","灵魄丹","清蕴丹","回生丹","结婴丹","血莲丹","绛云丹","复生丹","化神丹","涅槃丹","洗髓丹","一阶本源丹","二阶本源丹","三阶本源丹","四阶本源丹","五阶本源丹","六阶本源丹","七阶本源丹","八阶本源丹","九阶本源丹","一阶饲灵丹","二阶饲灵丹","三阶饲灵丹","四阶饲灵丹","五阶饲灵丹","六阶饲灵丹","七阶饲灵丹","八阶饲灵丹","九阶饲灵丹"];
 
 /* 玩法说明（摘自模组官方帮助「攻略」） */
-const guide = `
-<h2>🧭 境界与突破路线</h2>
+const guide = `<h2>🏯 第一步：找悦灵城（官方新手任务 1）</h2>
+<p>完美世界的开局不是先选灵根，而是先找到主城「悦灵城」。官方新手任务 1 的原话就是：“出入此地，第一步，先找到悦灵城”。城里集中了新手任务 NPC、商人、食肆、演武场、藏经阁和居民房，后面 6 个新手任务基本都在这里交。</p>
 <ul>
-  <li>境界路线：<span class="hl">凡人 → 练气期 → 筑基期 → 金丹期 → 元婴期 → 化神期 → 飞升灵界</span></li>
-  <li>突破丹药与概率（官方数据）：练气丹 +30% → 筑基丹 +25% → 煞丹 +40%（有反噬）/ 金丹 +20%（无副作用）→ 结婴丹 +15% → 化神丹 +10%</li>
-  <li>服用高于自身境界的丹药会"勉强服用"效果打折；服用低于自身境界的丹药"灵力质量太差"仅获10%灵值。</li>
-  <li>对应每个境界该吃什么丹药，直接看「<span class="hl">修为丹药</span>」页签，或在搜索框输入境界名（如：练气、筑基、金丹、元婴、化神）。</li>
+  <li><b>用默认世界类型。</b>平坦 / 其他世界类型可能不生成，或不打印坐标。</li>
+  <li><b>看游戏日志：</b>进世界后打开 <span class="hl">设置 → 设备兼容 → 游戏运行日志</span>，搜 <span class="hl">悦灵城坐标</span>，会看到类似 <span class="hl">悦灵城坐标：[x:...,y:?,z:...]</span>；记下 x / z。</li>
+  <li><b>位置规律：</b>按当前版本生成逻辑，悦灵城在出生点 <b>0–50 个区块（约 0–800 格）</b>的 x / z 正方向；城很大，靠近就能看到。朝坐标方向走，配合指南针。</li>
+  <li><b>懒人种子：</b>老玩家分享种子 <span class="hl">ikun</span> 开局附近有悦灵城（2022 年视频）；当前版本不保证，失效就用日志坐标。</li>
+  <li><b>日志里没有：</b>确认是默认世界；换一个新默认世界重试。也可到游戏目录 <span class="hl">Bugs/Game.log</span> 搜「悦灵城坐标」。别为了找城挖穿地府。</li>
+  <li><b>到城后：</b>先找 <b>隐形守护者</b> 对话；NPC 找不到就在城里多转两圈 / 等刷新（约 600 秒）。</li>
 </ul>
-<h2>🧪 炼丹说明（官方）</h2>
+
+<h2>📜 新手 7 步（官方「新手任务」链）</h2>
+<ol>
+  <li><b>找悦灵城</b>：找 <b>隐形守护者</b> 交任务；奖励 <span class="hl">上品灵石×6</span>。</li>
+  <li><b>攒本源</b>：找 <b>嫦梦留痕</b>；野外随机刷新「本源脉」，杀凡阶生物也掉本源；奖励×6。</li>
+  <li><b>弄武器</b>：找 <b>lstx</b>；商人买 / 挖坟 / 自己炼；武器有境界，别用高于自身两个大境界的武器（会反噬）；精炼 = 武器放中心 + 周围 8 格灵石（灵石品质 ≥ 武器），修复 = 周围随便放灵石；奖励×6。</li>
+  <li><b>认识商人</b>：找 <b>浮世三千</b>；悦灵城 / 野外的黄色名字 NPC 可交易，手持灵石右键 / 长按；奖励×6。</li>
+  <li><b>灵根</b>：找 <b>多人君</b>；用「基础修行法」获得灵根（层数看运气：1 最好、15 无灵根、14 最差灵根）；不满意用「清心玉脂」洗（随机，可能升也可能降；商人有卖，云固定出售）；基础修行法可挖坟或找商人（多人君 / 千里共婵娟有卖）；用完后必须再学一门功法，否则突破吃不到属性加成；凡人没用基础修行法最多突破 14 次；奖励×6。</li>
+  <li><b>突破 / 灵值</b>：找 <b>筠槛</b>；1 阶初期后可用灵石打坐代替本源；1 阶巅峰需要灵值：打同阶 / 更高修士妖兽、2 阶+妖丹配融血丹 / 清蕴丹（否则容易暴毙，配合打坐）、玄元丹；不同境界吃不同丹；奖励×6。</li>
+  <li><b>灵火 / 炼丹</b>：找 <b>不满的汤</b>；9 个本源合成「本源珠」，丢向灵火有几率收服 / 商人买；炼丹炉可去炼丹塔挖 / 挖坟 / 商人买；灵草野外 / 商人；丹方非必需但 +30%；单格灵草炼完得种子；种植要聚灵阵 + 耕地 + 灵石粉；奖励×6。</li>
+</ol>
+<p>7 个任务共 <span class="hl">42 个上品灵石</span>，是前期启动资金。NPC 找不到就等刷新 / 在城里多转两圈。</p>
+
+<h2>🎮 操作与交互（官方帮助）</h2>
 <ul>
-  <li>炼丹炉用<span class="hl">铁块+铁锭+铁棒</span>在工作台合成；炼丹必须先在炉中放入<span class="hl">灵火</span>（本源珠收服或向NPC购买）。</li>
-  <li>炼丹的基础成功率只有 <span class="hl">30%</span>。随着炼制次数的增多，不管成功与否，炼制成功率都会逐渐提升，直到100%。<b>每种丹药独立计算</b>——比如某丹药成功率已到100%，不影响其他没炼过的丹药。</li>
-  <li>炼丹时放置<span class="hl">对应的丹方</span>（丹方卷轴），炼制成功率提升 <span class="hl">30%</span>。</li>
-  <li>炼丹失败时，有几率炸炉，炸炉几率为 <span class="hl">10%</span>。</li>
-  <li>材料数量比例必须为整数：例如聚气丹 = 抱朴子×2 + 聚灵草×4，同时炼两份就放抱朴子×4 + 聚灵草×8。同时炼多份时炼制时间更长。</li>
-  <li>成功则得到对应数量的丹药；失败则得到对应数量的<span class="hl">废丹</span>。</li>
-  <li>放错材料（没有配方）会出现黑色进度条，进度条满时炉内物品（除灵火外）全部烧毁。</li>
+  <li>电脑端：按 <span class="hl">H</span> 或到「帮助 → 键盘设置」看按键；F1–F12 可能被系统占用，必要时按 <span class="hl">Alt + F1</span> 或先禁用系统功能。</li>
+  <li>手机端：屏幕上会有对应按钮，不需要记太多键位。</li>
+  <li>打开生物背包：<b>空手</b>、目标<b>昏迷</b>、自身等阶 ≥ 目标等阶、距离 2；电脑右键 / 手机长按目标。</li>
+  <li>手持物品与生物交互：电脑右键 / 手机长按；与 NPC 交易要<b>手持灵石</b>。</li>
+  <li>手机准星操作时，长按位置要对准 NPC，不是准星对着 NPC。</li>
 </ul>
-<h2>🌿 灵草种植</h2>
+
+<h2>🧘 修仙体系与境界</h2>
 <ul>
-  <li>种子来源：向NPC购买、野外收集幼苗、或用炼丹炉把成熟灵草炼化成种子（<span class="hl">1株灵草 → 3颗种子</span>）。</li>
-  <li>必须种在<span class="hl">灵土</span>上（灵石→灵石粉→撒在耕地上变成灵土），非灵植师职业种灵草容易亏本。</li>
-  <li>灵草有生长阶段：种子→幼苗→未成熟→成熟，枯萎的灵草无法炼化。</li>
+  <li>人界：凡人 0 阶 → 练气一层 1 阶 → … → 练气大圆满 1.9 阶 → 筑基 2 阶 → 筑基中期 2.25 → 后期 2.5 → 瓶颈 2.75 → 金丹 3 → … → 元婴 4 → … → 化神 5 阶。</li>
+  <li>练气期分 10 个小阶；筑基 / 金丹 / 元婴各有初期、中期、后期、瓶颈 4 段。</li>
+  <li>化神期之后是灵界篇（待更新）；达到化神会被强制飞升到灵界。</li>
+  <li>生物修为对应玩家体系；练气 1–3 层为初期、4–6 层为中期、7–9 层为后期、大圆满为巅峰。</li>
 </ul>
-<h2>🔥 灵火收服</h2>
+
+<h2>🐾 妖兽等阶参考（官方区间）</h2>
 <ul>
-  <li>练气期前，用箱子收集本源，在工作台处九本源合成一个<span class="hl">本源珠</span>。</li>
-  <li>把本源珠丢向灵火（练气期前灵火会对玩家造成伤害），有 <span class="hl">30%</span> 概率收服灵火；也可向NPC购买高级灵火（效果与普通灵火相同）。</li>
+  <li><b>0 阶</b>：生命 0–500，攻击 0–50</li>
+  <li><b>1 阶</b>：生命 500–2000，攻击 50–150</li>
+  <li><b>2 阶</b>：生命 2000–4000，攻击 200–350</li>
+  <li><b>3 阶</b>：生命 4000–6000，攻击 400–550</li>
+  <li><b>4 阶</b>：生命 6000–8000，攻击 600–750</li>
+  <li><b>5 阶</b>：生命 8000–10000，攻击 800–1000</li>
+  <li>个别妖兽会低于区间；打不过就看等阶，别硬越阶。</li>
 </ul>
-<h2>⛏️ 炼器说明</h2>
+
+<h2>📊 属性点怎么加（官方说明）</h2>
 <ul>
-  <li>炼器炉用<span class="hl">铜块+铜锭+铁棒</span>在工作台合成。</li>
-  <li>炼器所用灵石品阶决定概率：<span class="hl">下品10% / 中品30% / 上品80% / 极品100%</span>（空间戒100%）。运气不好就存档回档吧！</li>
-  <li>武器强化：灵石围一圈 + 武器居中，一次强化+1精；武器品阶越高，所需灵石品质越高。</li>
-  <li>武器品阶：灵器（剑·承影定光…）→ 法器（剑·耀光沙华…）→ 魂器（剑·飘影茂陵…）→ 禁器（噬灵）。</li>
+  <li><b>血量</b>：不再细分火焰 / 摔落 / 爆炸抗性，统一加生命。</li>
+  <li><b>本源</b>：相当于蓝量，技能（含武器技能）都消耗；饱食度为 0 时会缓慢消耗本源，饱食度大于 0.5 又缓慢恢复；本源枯竭按百分比扣血。</li>
+  <li><b>攻击力</b>：决定空手最大伤害。近战公式：禁器 = 武器面板 + 30% 自身攻击；非禁器 = 自身攻击 ≥ 武器面板时 20% 武器面板 + 自身攻击，否则武器面板 + 20% 自身攻击。</li>
+  <li><b>恢复</b>：加的是额外回血；基础回血受模式 / 睡觉 / 饱食度影响，饱食度很重要。</li>
+  <li><b>速度 / 跳跃</b>：基础最大为初始值 2 倍；继续加点会加到加速 / 超级跳跃上，但更耗耐力与饱食度。</li>
+  <li><b>闪避</b>：最多 50%，只闪避近战伤害。</li>
+  <li><b>蓄力</b>：不能加点，是物品栏右侧「剑」图标，决定命中率 / 攻击冷却。</li>
+  <li><b>本源护盾</b>：不能加点，物品栏左侧护盾图标；满时减 50% 伤害，然后变透明并缓慢恢复（本源不为 0 时）。</li>
+  <li><b>饱食度</b>：修行者也要吃饭；辟谷只是用本源维持，不是不用管。</li>
 </ul>
-<h2>💎 灵石与交易</h2>
+
+<h2>🌱 灵根与功法</h2>
 <ul>
-  <li>换算：<span class="hl">1000下品灵石 = 100中品灵石 = 10上品灵石 = 1极品灵石</span>。</li>
-  <li>手持灵石右键（手机长按）商人可交易；不同NPC商品不同，如<span class="hl">筠槛：丹药丹方</span>、<span class="hl">云：凝露草/幻菇/清心玉脂</span>。</li>
-  <li>货物会打折（随机6折到15折），压箱底货物价格翻倍；可交易NPC名字为亮黄，不可交易NPC为暗黄。</li>
-  <li>输入灵石数量时，在数量后加$1为中品、$2为上品、$3为极品，如 100$1 = 100个中品灵石。</li>
+  <li><b>灵根不是创建角色时选的</b>：开局没有灵根；使用「基础修行法」后获得，层数看运气（<span class="hl">1 最好、15 无灵根、14 最差灵根</span>）；不满意用「清心玉脂」洗，结果随机，可能升也可能降；商人有卖，云固定出售。</li>
+  <li><b>基础修行法</b>：来源是挖坟概率出，或找商人买（多人君 / 千里共婵娟）；用完后必须再学一门功法，否则突破吃不到属性加成；凡人没用它最多突破 14 次。</li>
+  <li><b>九重锻体神诀</b>：空手 / 拳风 / 处决 / 眩晕流；重级靠「损失生命」提升（只记录单次受到 ≥ 10% + 2%×重级 最大生命的伤害）。</li>
+  <li><b>九转凝源玄功</b>：本源护盾流；散功升转，1–9 转可把本源当血量抵伤（30%–70%）。</li>
+  <li><b>万灵御兽神诀</b>：驯服 / 灵宠 / 奴印；灵宠可分担伤害，每只 10%、最多 70%；奴印目标等阶不能超过自身 0.25。</li>
+  <li><b>九劫不灭神功</b>：劫印 / 免死 / 回血流；最多 9 个劫印，消耗后 1200 秒凝聚一次。</li>
+  <li><b>诛天杀戮魔功</b>：200 杀戮值入门；吸血、杀戮光环、护盾；杀戮值越高伤害越高。</li>
+  <li><b>万佛经</b>：道德 200 入门；虚妄之眼 / 不动明王 / 舍利；道德低于 200 会入魔。</li>
+  <li><b>吞天魔功</b>：官方标注「敬请期待」。</li>
+  <li>功法可以混修，但要注意各功法的前提与惩罚；以游戏内帮助为准。</li>
 </ul>
-<h2>🐾 御兽相关</h2>
+
+<h2>🧪 炼丹（官方 + 玩家整理）</h2>
 <ul>
-  <li>普通生物：击晕后喂食对应食物（狼喂肉、野猪喂南瓜）。</li>
-  <li>妖化生物：击晕后喂养<span class="hl">饲灵丹</span>（丹方可在创造模式查看）。</li>
-  <li>灵兽可用妖丹升级；骑行时电脑端按Z可操控灵宠全部行为。</li>
+  <li>基础成功率 <span class="hl">30%</span>；每炼一次（成功或失败）该丹药成功率都会涨，直到 100%；<b>每种丹药独立计算</b>。</li>
+  <li>放对应丹方，成功率 <span class="hl">+30%</span>；失败有 <span class="hl">10%</span> 概率炸炉。</li>
+  <li>材料数量必须按整数比例放：例如聚气丹 = 抱朴子×2 + 聚灵草×4；炼 2 份就放 ×4 / ×8，炼制时间更长。</li>
+  <li>成功得对应数量丹药，失败得对应数量<b>废丹</b>；放错材料会出现黑条，进度满后炉内物品（除灵火外）烧毁。</li>
+  <li><b>丹毒</b>：丹药吃太多会积累杂质，降低后续丹药吸收；别乱嗑。</li>
+  <li><b>灵火</b>：9 个本源合成「本源珠」，丢向灵火有几率收服（玩家经验约 30%，以游戏内为准）；前期灵火别靠太近，也会伤人；也可向商人买。</li>
+  <li><b>炼丹炉</b>：去炼丹塔挖、挖坟概率出，或找商人买；灵草野外刷新 / 商人出售。</li>
+  <li><b>种植</b>：单格灵草放进炼丹炉炼完可得种子；需要<b>聚灵阵 + 耕地 + 灵石粉</b>；1 颗灵石研磨成 8 份灵石粉，撒在耕地上有几率变灵土；聚灵阵低级 / 中级 / 高级可向商人买。</li>
+  <li>具体丹方直接看「炼丹丹方」页签，材料来源看「材料大全」。</li>
 </ul>
-<h2>📌 其他提示</h2>
+
+<h2>⚒️ 炼器（玩家整理）</h2>
 <ul>
-  <li>灵气复苏后击杀动物获取修为，打坐炼化修为使自身升级；磕过多丹药会导致加属性点时的属性减少。</li>
-  <li>境界路线：练气→筑基→金丹→元婴→化神→飞升灵界。</li>
-  <li>使用错误的物品炼丹/炼器会烧毁材料，放置前请确认配方！</li>
+  <li>炼器炉：铜块 + 铜锭 + 铁棒 在工作台合成。</li>
+  <li>炼器所用灵石品阶决定概率：下品 10% / 中品 30% / 上品 80% / 极品 100%；空间戒 100%。</li>
+  <li>武器强化：灵石围一圈 + 武器居中，一次 +1 精；精炼必须用与武器同品质或更高品质的灵石；修复在武器周围随便放灵石即可。</li>
+  <li>武器品阶：灵器 → 法器 → 魂器 → 禁器；别用高于自身两个大境界的武器，会反噬。</li>
+  <li>放错材料 / 失败可能损失材料，先存档再炼。</li>
 </ul>
-`;
+
+<h2>🐺 御兽（官方）</h2>
+<ul>
+  <li>普通生物：击晕后喂对应食物（狼喂肉、野猪喂南瓜）。</li>
+  <li>妖化生物：击晕后喂<b>饲灵丹</b>。</li>
+  <li>灵宠可以直接骑；电脑端按 <span class="hl">Z</span> 可操控全部行为，否则是半控制状态。</li>
+  <li>玩家近战不会伤害自己的灵宠。</li>
+  <li>万灵御兽神诀：目标生命低于 30% 时，每次攻击有 30%×(1+等阶差) 概率直接驯服；灵宠可分担伤害；奴印目标需低于 35% 且昏迷。</li>
+</ul>
+
+<h2>💰 NPC 交易（官方）</h2>
+<ul>
+  <li>手持灵石，电脑右键 / 手机长按商人；不是所有人形 NPC 都是商人，黄色名字的才是。</li>
+  <li>每个商人货物、收购类型、收购上限不同；价格随机 6 折到 15 折，压箱底货物价格翻倍。</li>
+  <li>货物品阶决定所需灵石品质；商人也有等阶，高等阶商人货更好。</li>
+  <li>换算：<span class="hl">1000 下品 = 100 中品 = 10 上品 = 1 极品</span>；输入数量后加 <span class="hl">$1 / $2 / $3</span> 分别表示中品 / 上品 / 极品，如 100$1 = 100 中品。</li>
+  <li>交易方式：购买、出售、兑换、赠送；购买会自动找零。</li>
+  <li>兑换 / 出售 / 赠送的物品会进商人背包，交易结束可以「杀人越货」；商人本质是老赖，建议货比三家。</li>
+</ul>
+
+<h2>🌌 维度与秘境（官方）</h2>
+<ul>
+  <li><b>主世界</b>：无限大；穿过最高处到灵界，穿过最低处到地府。</li>
+  <li><b>地府</b>：永夜，妖兽 / 怨灵 / 阴间生物；实力不够别挖穿主世界，否则可能永远留在地府。</li>
+  <li><b>灵界</b>：化神期强制飞升；灵界篇待更新。</li>
+  <li><b>暗幽牢狱</b>：地府空间裂缝开辟，关押凶残生物。</li>
+  <li><b>冰域 / 闪雷界 / 血色禁地 / 域外战场 / 龙之谷 / 元空秘境</b>：特殊小世界；闪雷界多为五阶妖兽，血色禁地有特殊灵草矿物，龙之谷多龙族。</li>
+  <li>暗幽牢狱、血色禁地、冰域、闪雷界、域外战场、元空秘境是有限世界：存在 3 天后，下次进入会重新生成，地形变化、建筑消失；别在里面长住。</li>
+</ul>
+
+<h2>⚔️ 特殊技能与剑意（官方）</h2>
+<ul>
+  <li><b>灵视</b>：练气期开启，黑暗中看清周围。</li>
+  <li><b>神识外放</b>：练气期开启，可穿透方块，但不能交互 / 攻击 / 挖掘；距离随修为增加。</li>
+  <li><b>元婴出窍</b>：元婴期；原地留下肉身，肉身死亡玩家也死亡；元神攻击 +50% 伤害、免疫 50% 物理、额外受 100% 魔法。</li>
+  <li><b>剑意</b>：练气期用剑类武器有概率获得剑意经验，100% 解锁；电脑 F7 / 手机点物品栏右侧「剑」图标。未学剑意技能书会 -75% 剑气伤害、+50% 本源消耗。</li>
+  <li>剑意连招：攻 / 守（格挡）、弹反、踏步、留影、剑痕、断斩 / 结阵；详细伤害以游戏内技能书为准。</li>
+  <li><b>状态</b>：眩晕 ≥ 6 会昏迷（清心可免）；丹毒、中毒、流血、失明、剑魂、枪魂标记、禁止飞行等，按需应对。</li>
+</ul>
+
+<h2>❓ 常见避坑</h2>
+<ul>
+  <li><b>先找悦灵城</b>：不要开局乱跑；主城里有任务 NPC 和商人，前 7 个任务共 42 上品灵石。</li>
+  <li><b>灵根不是自选</b>：用基础修行法随机获得；层数差就用清心玉脂洗；别在没灵根时一路突破（凡人最多 14 次）。</li>
+  <li><b>丹药别乱嗑</b>：丹毒会降低丹药收益；突破丹按境界吃。</li>
+  <li><b>炼丹先存档</b>：10% 炸炉，失败出废丹。</li>
+  <li><b>交易货比三家</b>：价格浮动大，压箱底翻倍；商人背包可以抢，但先掂量实力。</li>
+  <li><b>别乱挖穿地府</b>：没实力可能回不来。</li>
+  <li><b>秘境 3 天重置</b>：建筑会消失，别把家安在里面。</li>
+  <li><b>越阶妖兽</b>：先看等阶区间，打不过就跑。</li>
+</ul>
+
+<h2>🎬 视频 / 社区参考</h2>
+<ul>
+  <li><a href="https://www.bilibili.com/video/BV1yV4y137gY" target="_blank" rel="noopener">B 站：生存战争完美世界新手教程（2022）</a></li>
+  <li><a href="https://www.bilibili.com/video/BV1hTXGBDEt8" target="_blank" rel="noopener">B 站：前往悦灵城（2.5.1，2026）</a></li>
+  <li><a href="https://www.bilibili.com/video/BV1g8411n7WT" target="_blank" rel="noopener">B 站：开局就能找到悦灵城的种子（ikun）</a></li>
+  <li><a href="https://www.bilibili.com/video/BV1zY4y1K7Sj" target="_blank" rel="noopener">B 站：灵根系统细节盘点</a></li>
+  <li><a href="https://www.scbbs.top/postDetails/39" target="_blank" rel="noopener">SCBBS：完美世界模组发布帖</a></li>
+</ul>
+<p style="color:var(--dim);font-size:12px;margin-top:16px;line-height:1.7">资料整理自《完美世界》v26.4.19.1 模组内置帮助（操作 / 介绍 / 攻略 / 功法 / 技能 / 地域 / Buff）与官方新手任务链；悦灵城坐标 / 位置规律来自模组生成逻辑与官方更新日志。配方、炼器概率等为玩家整理；视频为玩家内容，版本可能不同，最终以游戏内为准。</p>`;
 
 /* ================= 渲染逻辑 ================= */
 const $ = id => document.getElementById(id);
+const TAB_IDS = ["realms","alchemy","refine","craft","materials","guide"];
 let currentTab = "alchemy";
 let alchemyFilter = "全部";
 let refineFilter = "全部";
@@ -881,13 +992,54 @@ function renderGuide(){
 function safeRender(fn){
   try { fn(); } catch(err) { console.error("渲染失败", err); }
 }
-function renderAll(){
-  safeRender(renderAlchemy); safeRender(renderRefine); safeRender(renderCraft); safeRender(renderMaterials); safeRender(renderRealms);
+function readTabCount(id){
+  const m = ($(id).textContent || "").match(/共\s*(\d+)/);
+  return m ? parseInt(m[1], 10) : 0;
 }
-function showTab(tab){
+function renderAll(){
+  safeRender(renderAlchemy); safeRender(renderRefine); safeRender(renderCraft); safeRender(renderMaterials); safeRender(renderRealms); safeRender(renderGuide);
+  return {realms:readTabCount("realmCount"), alchemy:readTabCount("alchemyCount"), refine:readTabCount("refineCount"), craft:readTabCount("craftCount"), materials:readTabCount("matCount")};
+}
+const searchTabLabels = {alchemy:"炼丹丹方", refine:"炼器配方", craft:"工作台合成", materials:"材料大全", realms:"修为丹药"};
+function preferredTabForQuery(q){
+  if(!q) return null;
+  if(pills.includes(q) || pillInfo[q]) return "alchemy";
+  if(q.includes("妖丹")) return "materials";
+  if(spiritPlants.includes(q)) return "materials";
+  if(materials.some(m => m.name === q)) return "materials";
+  return null;
+}
+function autoJumpForSearch(q, counts){
+  if(!q) return;
+  const pref = preferredTabForQuery(q);
+  if(pref && pref !== currentTab && (counts[pref] || 0) > 0){
+    showTab(pref);
+    toast(`已跳到「${searchTabLabels[pref]}」查看「${q}」`);
+    return;
+  }
+  if((counts[currentTab] || 0) > 0) return;
+  const hit = ["alchemy","refine","craft","materials","realms"].find(t => (counts[t] || 0) > 0);
+  if(hit){
+    showTab(hit);
+    toast(`已跳到「${searchTabLabels[hit]}」查看「${q}」`);
+  } else {
+    toast(`没有找到「${q}」，换个关键词试试`);
+  }
+}
+function showTab(tab, syncHash = true){
+  if(!TAB_IDS.includes(tab)) tab = "realms";
   currentTab = tab;
-  ["realms","alchemy","refine","craft","materials","guide"].forEach(t=>{$(t).style.display = t===tab?"block":"none"});
+  TAB_IDS.forEach(t=>{$(t).style.display = t===tab?"block":"none"});
   document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab));
+  if(syncHash && location.hash !== "#" + tab){
+    const y = window.scrollY;
+    try{ history.replaceState(null, "", "#" + tab); }catch(e){}
+    window.scrollTo(0, y);
+  }
+}
+function tabFromHash(){
+  const h = location.hash.replace(/^#/, "");
+  return TAB_IDS.includes(h) ? h : null;
 }
 
 /* 搜索增强：命中境界关键词（练气/筑基/金丹/元婴/化神/飞升/凡人/突破）时自动切到「修为丹药」页 */
@@ -959,11 +1111,21 @@ $("search").addEventListener("input", ()=>{
     return;
   }
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(renderAll, 120);
+  searchTimer = setTimeout(()=>{
+    const counts = renderAll();
+    autoJumpForSearch(q, counts);
+  }, 120);
 });
 $("clearBtn").onclick = ()=>{ clearTimeout(searchTimer); $("search").value=""; $("clearBtn").style.display="none"; renderAll(); toast("已清除搜索"); };
 renderAlchemyChips(); renderRefineChips(); renderMatChips(); renderRealmChips(); renderRealmPath();
-showTab("realms"); renderAll();
+const initialTab = tabFromHash() || "realms";
+showTab(initialTab, false);
+renderAll();
+if(tabFromHash()){ try{ window.scrollTo(0, 0); }catch(e){} }
+window.addEventListener("hashchange", ()=>{
+  const t = tabFromHash();
+  if(t && t !== currentTab) showTab(t, false);
+});
 </script>
 <script>
 /* ===== 自愿赞助弹窗 ===== */
