@@ -2,8 +2,18 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>完美世界 Mod 配方查看器 · 炼丹/炼器/合成/材料大全</title>
+<meta name="description" content="完美世界Mod配方查询：炼丹丹方、炼器配方、工作台合成、材料大全、修为丹药；免费、手机可用。">
+<meta name="theme-color" content="#0e1116">
+<link rel="canonical" href="https://wmsj-recipe.netlify.app/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e1116'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23d4a94e'%3E%E4%B8%B9%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="完美世界 Mod 配方查看器">
+<meta property="og:title" content="完美世界 Mod 配方查看器">
+<meta property="og:description" content="炼丹丹方、炼器配方、工作台合成、材料大全、修为丹药；免费、手机可用。">
+<meta property="og:url" content="https://wmsj-recipe.netlify.app/">
+<meta property="og:image" content="https://wmsj-recipe.netlify.app/assets/og.png">
 <style>
   :root{
     --bg:#0e1116; --bg2:#151b23; --card:#1a222d; --card2:#202a38;
@@ -35,7 +45,7 @@
   .search-wrap{margin-top:10px;position:relative}
   .search-wrap input{
     width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;
-    color:var(--text);padding:10px 36px 10px 36px;font-size:14px;outline:none;
+    color:var(--text);padding:10px 36px 10px 36px;font-size:16px;outline:none;
   }
   .search-wrap input:focus{border-color:var(--gold)}
   .search-wrap .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:15px}
@@ -127,6 +137,55 @@
     font-size:13px;z-index:99;opacity:0;pointer-events:none;transition:.3s;max-width:88vw;text-align:center;
   }
   .toast.show{opacity:1}
+  /* ===== 自愿赞助 ===== */
+  .sponsor-wrap{text-align:center;margin-top:24px}
+  .sponsor-btn{
+    display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#3a2c10,#57401a);
+    border:1px solid var(--gold);color:var(--gold2);border-radius:20px;padding:8px 22px;
+    font-size:13px;cursor:pointer;transition:.2s;box-shadow:0 2px 10px rgba(212,169,78,.15);
+  }
+  .sponsor-btn:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
+  .sponsor-note{color:#5b6b7d;font-size:11px;margin-top:6px}
+  .modal-mask{
+    position:fixed;inset:0;background:rgba(8,10,14,.75);z-index:100;display:none;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-mask.show{display:flex}
+  .modal-box{
+    background:var(--card);border:1px solid var(--gold);border-radius:16px;max-width:420px;width:100%;
+    padding:24px 22px;text-align:center;position:relative;max-height:86vh;overflow-y:auto;
+    box-shadow:0 8px 40px rgba(0,0,0,.5);
+  }
+  .modal-box h2{color:var(--gold2);font-size:18px;margin-bottom:8px}
+  .modal-box .desc{color:var(--dim);font-size:12px;line-height:1.8;margin-bottom:14px}
+  .modal-close{
+    position:absolute;top:10px;right:14px;color:var(--dim);font-size:20px;cursor:pointer;
+    background:none;border:none;padding:4px 8px;
+  }
+  .modal-close:hover{color:var(--gold2)}
+  .qr-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .qr-item{flex:1;min-width:130px}
+  .qr-item .qr-label{color:var(--dim);font-size:11px;margin-bottom:6px}
+  .qr-img{
+    width:150px;height:150px;border-radius:10px;border:1px solid var(--line);
+    background:var(--bg2);display:flex;align-items:center;justify-content:center;
+    margin:0 auto;overflow:hidden;
+  }
+  .qr-img img{width:100%;height:100%;object-fit:contain;display:block}
+  .qr-img .ph{color:#5b6b7d;font-size:10px;line-height:1.6;padding:8px;text-align:center}
+  .thanks{margin-top:16px;color:var(--gold2);font-size:12px;line-height:2;background:var(--bg2);border:1px dashed var(--gold);border-radius:10px;padding:10px 14px}
+  .thanks .thanks-dim{color:var(--dim);font-size:10px}
+  .warn{
+    margin-top:16px;color:#fff;font-size:14px;line-height:2;font-weight:700;
+    background:linear-gradient(135deg,#7a1f1f,#b03a3a);
+    border:2px solid #ff7a7a;border-radius:12px;padding:16px 18px;text-align:center;
+    letter-spacing:1px;animation:warn-pulse 2s ease-in-out infinite;
+  }
+  .warn .warn-sub{font-size:12px;font-weight:400;color:#ffd9d9;letter-spacing:0}
+  @keyframes warn-pulse{
+    0%,100%{box-shadow:0 0 10px rgba(224,80,80,.35);border-color:#ff7a7a}
+    50%{box-shadow:0 0 26px rgba(224,80,80,.8);border-color:#ffb0b0}
+  }
   @media (max-width:480px){
     .grid{grid-template-columns:1fr}
     h1{font-size:17px}
@@ -135,6 +194,8 @@
 </head>
 <body>
 
+<noscript><div style="padding:20px;color:#dbe4ee;font-size:14px">请启用 JavaScript 以查看配方数据。</div></noscript>
+
 <header>
   <div class="h-top">
     <div class="logo">丹</div>
@@ -142,10 +203,11 @@
       <h1>完美世界 Mod 配方查看器</h1>
     </div>
     <span class="ver" id="verTag"></span>
+    <span class="ver" id="dataDate"></span>
   </div>
   <div class="search-wrap">
     <span class="ic">🔍</span>
-    <input id="search" type="search" placeholder="搜索丹药 / 材料 / 配方… 如：筑基丹、凝露草、魂石">
+    <input id="search" type="search" aria-label="搜索配方、材料或丹药" placeholder="搜索丹药 / 材料 / 配方… 如：筑基丹、凝露草、魂石">
     <span class="clear" id="clearBtn">✕</span>
   </div>
   <nav id="tabs">
@@ -188,17 +250,54 @@
     <div class="guide-box" id="guideBox"></div>
   </div>
   <div class="footer">
+    <div class="sponsor-wrap">
+      <button class="sponsor-btn" id="sponsorBtn">☕ 自愿赞助支持作者</button>
+      <div class="sponsor-note">本工具完全免费，赞助与否均可正常使用全部功能</div>
+    </div>
     数据提取自 <b>生存战争 · 完美世界 Mod（人界篇）API1.9 v26.4.19.1</b> 模组文件（炼丹炉配方.xml / 炼器炉配方.xml / 物品合成.cr / 修仙.dll / zh-CN.json / 完美世界介绍.xml）<br>
     模组作者：隐形守护者 及完美世界制作组 · 本工具仅作资料查阅，请支持正版模组（免费），禁止私自转载模组本体<br>
-    若版本更新导致配方变动，可在游戏内「创造模式 → 丹方」查看最新数据
+    若版本更新导致配方变动，可在游戏内「创造模式 → 丹方」查看最新数据<br>
+    🏗️ 网站搭建于 2026-08-23 ·
+    <span id="busuanzi_container_site_pv" style="display:none">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
+    <span id="busuanzi_container_site_uv" style="display:none"> · 访客数 <span id="busuanzi_value_site_uv"></span> 人</span>
   </div>
 </main>
 <div class="toast" id="toast"></div>
+
+<!-- 自愿赞助弹窗 -->
+<div class="modal-mask" id="sponsorModal">
+  <div class="modal-box">
+    <button class="modal-close" id="sponsorClose">✕</button>
+    <h2>☕ 自愿赞助</h2>
+    <div class="desc">
+      感谢您使用本工具！网站由作者个人维护，完全免费。<br>
+      如果它帮到了您，可以自愿赞助一杯咖啡支持作者持续更新配方数据。<br>
+      <b>赞助与否，都可以正常使用全部功能。</b>
+    </div>
+    <div class="qr-row">
+      <div class="qr-item" style="max-width:220px">
+        <div class="qr-label">微信赞赏码</div>
+        <div class="qr-img" id="qrWechat">
+          <span class="ph">微信赞赏码<br>（作者放置中）</span>
+        </div>
+      </div>
+    </div>
+    <div class="warn">⚠️ 未满 18 周岁禁止赞助！<br>
+      <span class="warn-sub">赞助系自愿赠与行为，请理性打赏；未成年人误操作产生的赞助，本站概不负责，请监护人妥善引导。</span></div>
+    <div class="thanks">
+      🙏 衷心感谢每一位赞助者的支持与鼓励！<br>
+      正是你们的认可，让作者有动力持续维护与更新这份配方数据。<br>
+      <span class="thanks-dim">（若您愿意留下称呼，可在赞赏时备注，作者会铭记在心）</span>
+    </div>
+    <div class="sponsor-note" style="margin-top:12px">长按 / 扫码即可转账，感谢您的支持！</div>
+  </div>
+</div>
 
 <script>
 /* ================= 数据区（提取自 完美世界 API1.9 v26.4.19.1 模组文件） ================= */
 
 const VERSION = "完美世界 · 人界篇 API1.9 v26.4.19.1";
+const DATA_UPDATED = "2026-08-23";
 
 /* ---------- 炼丹炉配方（数据文件/炼丹炉配方.xml） ---------- */
 const alchemy = [
@@ -650,7 +749,7 @@ function renderMatChips(){
 function matUsedIn(name){
   const list = [];
   ALL_RECIPES.forEach(r=>{
-    const hit = r.ings.some(([n])=>n===name || n.startsWith(name) || (name.startsWith("灵石")&&n.indexOf("灵石")>=0));
+    const hit = (r.ings||[]).some(([n])=>n===name || n.startsWith(name) || (name.startsWith("灵石")&&n.indexOf("灵石")>=0));
     if(hit) list.push(r);
   });
   return list;
@@ -667,7 +766,7 @@ function renderRecipeCard(r){
     <h3><span class="result-item">${esc(r.result)}</span>${r.count>1?`<span class="result-count">×${r.count}</span>`:""}</h3>
     ${badge}
     ${sub}
-    <div class="ings"><span class="arrow">材料</span>${r.ings.map(([n,q])=>`<span class="ing" data-name="${esc(n)}"><b>${esc(n)}</b> <span class="q">×${q}</span></span>`).join("")}</div>
+    <div class="ings"><span class="arrow">材料</span>${(r.ings||[]).map(([n,q])=>`<span class="ing" data-name="${esc(n)}"><b>${esc(n)}</b> <span class="q">×${q}</span></span>`).join("")}</div>
     ${pat}
   </div>`;
 }
@@ -697,7 +796,7 @@ function renderRealmChips(){
 function renderRealms(){
   const q = $("search").value.trim().toLowerCase();
   let list = realms.filter(r=>realmFilter==="全部"||r.name===realmFilter);
-  if(q) list = list.filter(r=> r.name.toLowerCase().includes(q) || r.pills.some(p=>p.toLowerCase().includes(q)) || r.tip.toLowerCase().includes(q));
+  if(q) list = list.filter(r=> (r.name||"").toLowerCase().includes(q) || (r.pills||[]).some(p=>p.toLowerCase().includes(q)) || (r.tip||"").toLowerCase().includes(q));
   const card = r=>{
     const isLast = r.breakthrough==="飞升"||r.breakthrough==="—";
     const bt = r.breakthrough && r.breakthrough!=="—" ? r.breakthrough.split(" / ").map(b=>{
@@ -711,7 +810,7 @@ function renderRealms(){
       <div class="sub">${esc(r.tip)}</div>
       ${bt?`<div class="sub" style="color:var(--gold2)">💥 突破 ${esc(r.next)}：${bt}</div>`:""}
       <div class="sub" style="margin-top:6px">服用丹药：</div>
-      <div class="ings">${r.pills.map(p=>{
+      <div class="ings">${(r.pills||[]).map(p=>{
         const info = pillInfo[p]||{};
         const sp = info.spirit?` <span class="q" title="服用获得灵值">+${info.spirit}灵值</span>`:"";
         return `<span class="ing" data-name="${esc(p)}"><b>${esc(p)}</b>${sp}</span>`;
@@ -727,7 +826,7 @@ function renderAlchemy(){
   let list = alchemy.filter(r=>alchemyFilter==="全部"||r.tier===alchemyFilter);
   list = list.concat(alchemyFilter==="全部"||alchemyFilter==="灵草炼化"?plantRecipes:[]);
   if(q){
-    list = list.filter(r=> r.result.toLowerCase().includes(q) || r.ings.some(([n])=>n.toLowerCase().includes(q)) || r.note.toLowerCase().includes(q));
+    list = list.filter(r=> (r.result||"").toLowerCase().includes(q) || (r.ings||[]).some(([n])=>n.toLowerCase().includes(q)) || (r.note||"").toLowerCase().includes(q));
   }
   $("alchemyGrid").innerHTML = list.map(renderRecipeCard).join("") || `<div style="color:var(--dim);padding:20px">没有找到匹配的丹方</div>`;
   $("alchemyCount").textContent = `共 ${list.length} 个丹方（炼丹炉配方 ${alchemy.length} + 灵草炼化 ${plantRecipes.length}）`;
@@ -735,14 +834,14 @@ function renderAlchemy(){
 function renderRefine(){
   const q = $("search").value.trim().toLowerCase();
   let list = refine.filter(r=>refineFilter==="全部"||r.cat===refineFilter);
-  if(q) list = list.filter(r=> r.result.toLowerCase().includes(q) || r.ings.some(([n])=>n.toLowerCase().includes(q)) || (r.note||"").toLowerCase().includes(q));
+  if(q) list = list.filter(r=> (r.result||"").toLowerCase().includes(q) || (r.ings||[]).some(([n])=>n.toLowerCase().includes(q)) || (r.note||"").toLowerCase().includes(q));
   $("refineGrid").innerHTML = list.map(renderRecipeCard).join("") || `<div style="color:var(--dim);padding:20px">没有找到匹配的炼器配方</div>`;
   $("refineCount").textContent = `共 ${list.length} 个炼器配方`;
 }
 function renderCraft(){
   const q = $("search").value.trim().toLowerCase();
   let list = craft;
-  if(q) list = list.filter(r=> r.result.toLowerCase().includes(q) || r.ings.some(([n])=>n.toLowerCase().includes(q)) || (r.note||"").toLowerCase().includes(q));
+  if(q) list = list.filter(r=> (r.result||"").toLowerCase().includes(q) || (r.ings||[]).some(([n])=>n.toLowerCase().includes(q)) || (r.note||"").toLowerCase().includes(q));
   $("craftGrid").innerHTML = list.map(renderRecipeCard).join("") || `<div style="color:var(--dim);padding:20px">没有找到匹配的合成配方</div>`;
   $("craftCount").textContent = `共 ${list.length} 个工作台配方`;
 }
@@ -760,7 +859,7 @@ function renderMaterials(){
     all.push({name:p,type:"丹药",desc:`${info.desc||"丹药（详见「炼丹丹方」页签查看配方）"}${extra}${extra2}${extra3}`,src:`${info.realm&&info.realm!=="—"?`适用修为：${info.realm}期`:"通用丹药"} · 炼丹炉炼制`});
   }});
   let list = all.filter(m=>matFilter==="全部"||m.type===matFilter);
-  if(q) list = list.filter(m=>m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q) || (m.src||"").toLowerCase().includes(q));
+  if(q) list = list.filter(m=>(m.name||"").toLowerCase().includes(q) || (m.desc||"").toLowerCase().includes(q) || (m.src||"").toLowerCase().includes(q));
   const card = m=>{
     const used = matUsedIn(m.name).filter(r=>!(r.src==="炼丹"&&r.tier==="灵草炼化"));
     const usedHtml = used.length? `<div class="used-in">🔗 用于 ${used.length} 个配方：${used.slice(0,6).map(r=>esc(r.result)).join("、")}${used.length>6?"…":""}</div>`:"";
@@ -779,8 +878,11 @@ function renderGuide(){
   $("guideBox").innerHTML = guide;
 }
 
+function safeRender(fn){
+  try { fn(); } catch(err) { console.error("渲染失败", err); }
+}
 function renderAll(){
-  renderAlchemy(); renderRefine(); renderCraft(); renderMaterials(); renderRealms();
+  safeRender(renderAlchemy); safeRender(renderRefine); safeRender(renderCraft); safeRender(renderMaterials); safeRender(renderRealms);
 }
 function showTab(tab){
   currentTab = tab;
@@ -847,19 +949,51 @@ function toast(msg){
 
 /* 初始化 */
 $("verTag").textContent = VERSION;
+$("dataDate").textContent = "数据 " + DATA_UPDATED;
+let searchTimer = null;
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{showTab(b.dataset.tab);renderAll()});
 $("search").addEventListener("input", ()=>{
   $("clearBtn").style.display = $("search").value? "block":"none";
   const q = $("search").value.trim();
   if(handleRealmSearch(q)){
-    renderAll();
     return;
   }
-  renderAll();
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(renderAll, 120);
 });
-$("clearBtn").onclick = ()=>{ $("search").value=""; $("clearBtn").style.display="none"; renderAll(); toast("已清除搜索"); };
+$("clearBtn").onclick = ()=>{ clearTimeout(searchTimer); $("search").value=""; $("clearBtn").style.display="none"; renderAll(); toast("已清除搜索"); };
 renderAlchemyChips(); renderRefineChips(); renderMatChips(); renderRealmChips(); renderRealmPath();
 showTab("realms"); renderAll();
+</script>
+<script>
+/* ===== 自愿赞助弹窗 ===== */
+(function(){
+  var modal = document.getElementById('sponsorModal');
+  var btn = document.getElementById('sponsorBtn');
+  var close = document.getElementById('sponsorClose');
+  if(!modal || !btn) return;
+  var qrLoaded = false;
+  function show(){
+    modal.classList.add('show');
+    if(!qrLoaded){ qrLoaded = true; tryQr('qrWechat', 'assets/wx-qr.png'); }
+  }
+  function hide(){ modal.classList.remove('show'); }
+  btn.addEventListener('click', show);
+  close.addEventListener('click', hide);
+  modal.addEventListener('click', function(e){ if(e.target === modal) hide(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') hide(); });
+  // 若部署了收款码图片则替换占位
+  function tryQr(id, src){ var el = document.getElementById(id); if(!el) return; var img = new Image(); img.onload = function(){ el.innerHTML = ''; el.appendChild(img); }; img.src = src; }
+})();
+</script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+setTimeout(function(){
+  var pv = document.getElementById('busuanzi_value_site_pv');
+  var uv = document.getElementById('busuanzi_value_site_uv');
+  if(pv && pv.textContent.trim()){ document.getElementById('busuanzi_container_site_pv').style.display='inline'; }
+  if(uv && uv.textContent.trim()){ document.getElementById('busuanzi_container_site_uv').style.display='inline'; }
+}, 2000);
 </script>
 </body>
 </html>
