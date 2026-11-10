@@ -128,6 +128,12 @@
   .guide-box li{margin:4px 0}
   .guide-content{min-width:0}
   .guide-content h2{scroll-margin-top:calc(var(--header-h,170px) + 18px)}
+  .guide-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .guide-toc-top{
+    background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
+    color:var(--gold2);border-radius:18px;padding:7px 14px;font-size:12px;cursor:pointer;
+  }
+  .guide-toolbar .hint{color:var(--dim);font-size:11px}
   .guide-toc-toggle{
     position:fixed;left:18px;bottom:76px;z-index:60;
     background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
@@ -181,6 +187,11 @@
   }
   .sponsor-btn:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
   .sponsor-note{color:#5b6b7d;font-size:11px;margin-top:6px}
+  .afdian-box{
+    margin:12px 0 4px;padding:12px;background:var(--bg2);
+    border:1px dashed var(--gold);border-radius:10px;
+  }
+  .afdian-box .qr-label{margin-bottom:8px}
   .sponsor-fab{
     position:fixed;left:18px;right:auto;bottom:18px;z-index:60;
     background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
@@ -338,6 +349,11 @@
         </div>
       </div>
     </div>
+    <div class="afdian-box">
+      <div class="qr-label">爱发电（推荐，自愿不锁功能）</div>
+      <a class="sponsor-btn" href="https://afdian.com/a/wmsjrecipe" target="_blank" rel="noopener" style="text-decoration:none">💜 打开爱发电</a>
+      <div class="sponsor-note">https://afdian.com/a/wmsjrecipe</div>
+    </div>
     <div class="warn">⚠️ 未满 18 周岁禁止赞助！<br>
       <span class="warn-sub">赞助系自愿赠与行为，请理性打赏；未成年人误操作产生的赞助，本站概不负责，请监护人妥善引导。</span></div>
     <div class="thanks">
@@ -345,7 +361,7 @@
       正是你们的认可，让作者有动力持续维护与更新这份配方数据。<br>
       <span class="thanks-dim">（若您愿意留下称呼，可在赞赏时备注，作者会铭记在心）</span>
     </div>
-    <div class="sponsor-note" style="margin-top:12px">长按 / 扫码即可转账，感谢您的支持！</div>
+    <div class="sponsor-note" style="margin-top:12px">可以点上方爱发电链接，或长按 / 扫码转账，感谢您的支持！</div>
   </div>
 </div>
 
@@ -1047,6 +1063,10 @@ window.addEventListener("resize", syncHeaderHeight);
 function renderGuide(){
   const box = $("guideBox");
   box.innerHTML = `
+    <div class="guide-toolbar">
+      <button class="guide-toc-top" id="guideTocTop">☰ 打开目录</button>
+      <span class="hint">点击目录章节可跳转，不占阅读宽度</span>
+    </div>
     <div class="guide-content" id="guideContent"></div>
     <button class="guide-toc-toggle" id="guideTocToggle" aria-expanded="false">☰ 目录</button>
     <div class="guide-toc-mask" id="guideTocMask"></div>
@@ -1061,6 +1081,7 @@ function renderGuide(){
   const panel = $("guideTocPanel");
   const mask = $("guideTocMask");
   const toggle = $("guideTocToggle");
+  const topBtn = $("guideTocTop");
   const closeBtn = $("guideTocClose");
   const closePanel = () => {
     panel.classList.remove("show");
@@ -1075,6 +1096,7 @@ function renderGuide(){
     toggle.setAttribute("aria-expanded", "true");
   };
   toggle.addEventListener("click", () => panel.classList.contains("show") ? closePanel() : openPanel());
+  if(topBtn) topBtn.addEventListener("click", openPanel);
   mask.addEventListener("click", closePanel);
   closeBtn.addEventListener("click", closePanel);
   links.innerHTML = "";
