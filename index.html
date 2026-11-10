@@ -141,21 +141,26 @@
     box-shadow:0 4px 20px rgba(0,0,0,.45);
   }
   .guide-toc-toggle.active{background:linear-gradient(135deg,#7a5318,#d4a94e);color:#1a1406}
-  .guide-toc-mask{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:65;display:none}
-  .guide-toc-mask.show{display:block}
   .guide-toc-panel{
-    position:fixed;left:18px;bottom:132px;z-index:70;width:300px;max-height:60vh;
-    display:none;flex-direction:column;background:var(--card);border:1px solid var(--gold);
-    border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
+    position:fixed;left:18px;top:calc(var(--header-h,170px) + 16px);z-index:70;
+    width:300px;max-height:60vh;display:none;flex-direction:column;
+    background:var(--card);border:1px solid var(--gold);border-radius:12px;
+    box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
   }
   .guide-toc-panel.show{display:flex}
+  .guide-toc-panel.collapsed{max-height:none}
   .guide-toc-head{
-    display:flex;align-items:center;justify-content:space-between;gap:8px;
-    padding:10px 12px;border-bottom:1px solid var(--line);color:var(--gold2);font-size:12px;font-weight:700;
+    display:flex;align-items:center;gap:6px;padding:9px 10px;
+    border-bottom:1px solid var(--line);color:var(--gold2);font-size:12px;font-weight:700;
+    cursor:move;touch-action:none;user-select:none;
   }
-  .guide-toc-close{background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px}
-  .guide-toc-close:hover{color:var(--gold2)}
-  .guide-toc-links{overflow:auto;padding:6px}
+  .guide-toc-head .title{flex:1;white-space:nowrap}
+  .guide-toc-collapse,.guide-toc-close{
+    background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px;
+  }
+  .guide-toc-collapse:hover,.guide-toc-close:hover{color:var(--gold2)}
+  .guide-toc-panel.collapsed .guide-toc-links{display:none}
+  .guide-toc-links{overflow:auto;padding:6px;min-height:0;flex:1}
   .guide-toc-links a{
     display:block;color:var(--dim);text-decoration:none;font-size:12px;line-height:1.6;
     padding:6px 8px;border-radius:6px;border-left:2px solid transparent;
@@ -164,7 +169,7 @@
   .guide-toc-links a.active{color:var(--gold2);background:var(--bg2);border-left-color:var(--gold)}
   @media (max-width:720px){
     .guide-toc-toggle{left:12px;bottom:70px;padding:8px 12px;font-size:12px}
-    .guide-toc-panel{left:12px;right:12px;bottom:122px;width:auto;max-height:55vh}
+    .guide-toc-panel{left:12px;right:12px;width:auto;top:calc(var(--header-h,230px) + 12px);max-height:55vh}
     .guide-content h2{scroll-margin-top:calc(var(--header-h,230px) + 18px)}
   }
   .mat-type{font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:10px;padding:1px 7px;margin-left:6px;flex:none}
@@ -1065,13 +1070,16 @@ function renderGuide(){
   box.innerHTML = `
     <div class="guide-toolbar">
       <button class="guide-toc-top" id="guideTocTop">☰ 打开目录</button>
-      <span class="hint">点击目录章节可跳转，不占阅读宽度</span>
+      <span class="hint">目录可拖动、可收起，不占阅读宽度</span>
     </div>
     <div class="guide-content" id="guideContent"></div>
     <button class="guide-toc-toggle" id="guideTocToggle" aria-expanded="false">☰ 目录</button>
-    <div class="guide-toc-mask" id="guideTocMask"></div>
     <div class="guide-toc-panel" id="guideTocPanel">
-      <div class="guide-toc-head"><span>玩法目录</span><button class="guide-toc-close" id="guideTocClose">✕</button></div>
+      <div class="guide-toc-head" id="guideTocHead">
+        <span class="title">玩法目录</span>
+        <button class="guide-toc-collapse" id="guideTocCollapse" aria-label="收起">−</button>
+        <button class="guide-toc-close" id="guideTocClose">✕</button>
+      </div>
       <div class="guide-toc-links" id="guideTocLinks"></div>
     </div>`;
   const content = $("guideContent");
@@ -1079,26 +1087,83 @@ function renderGuide(){
   const headings = Array.from(content.querySelectorAll("h2"));
   const links = $("guideTocLinks");
   const panel = $("guideTocPanel");
-  const mask = $("guideTocMask");
+  const head = $("guideTocHead");
   const toggle = $("guideTocToggle");
   const topBtn = $("guideTocTop");
   const closeBtn = $("guideTocClose");
+  const collapseBtn = $("guideTocCollapse");
+  let state = { left: 18, top: null, collapsed: false };
+  try {
+    const saved = JSON.parse(localStorage.getItem("guideTocState") || "null");
+    if(saved && typeof saved === "object") state = Object.assign(state, saved);
+  } catch(e) {}
+  panel.style.left = state.left + "px";
+  if(state.top != null) panel.style.top = state.top + "px";
+  const saveState = () => {
+    try { localStorage.setItem("guideTocState", JSON.stringify(state)); } catch(e) {}
+  };
+  const setCollapsed = v => {
+    panel.classList.toggle("collapsed", v);
+    collapseBtn.textContent = v ? "+" : "−";
+    collapseBtn.setAttribute("aria-label", v ? "展开" : "收起");
+    state.collapsed = v;
+    saveState();
+  };
+  setCollapsed(!!state.collapsed);
   const closePanel = () => {
     panel.classList.remove("show");
-    mask.classList.remove("show");
     toggle.classList.remove("active");
     toggle.setAttribute("aria-expanded", "false");
   };
   const openPanel = () => {
     panel.classList.add("show");
-    mask.classList.add("show");
+    setCollapsed(false);
     toggle.classList.add("active");
     toggle.setAttribute("aria-expanded", "true");
   };
-  toggle.addEventListener("click", () => panel.classList.contains("show") ? closePanel() : openPanel());
+  toggle.addEventListener("click", () => {
+    if(!panel.classList.contains("show")) openPanel();
+    else if(panel.classList.contains("collapsed")) setCollapsed(false);
+    else closePanel();
+  });
   if(topBtn) topBtn.addEventListener("click", openPanel);
-  mask.addEventListener("click", closePanel);
   closeBtn.addEventListener("click", closePanel);
+  collapseBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    setCollapsed(!panel.classList.contains("collapsed"));
+  });
+
+  // 拖动标题栏
+  let drag = null;
+  head.addEventListener("pointerdown", e => {
+    if(e.target.closest("button")) return;
+    const r = panel.getBoundingClientRect();
+    drag = { x: e.clientX, y: e.clientY, left: r.left, top: r.top, id: e.pointerId };
+    try { head.setPointerCapture(e.pointerId); } catch(err) {}
+    e.preventDefault();
+  });
+  head.addEventListener("pointermove", e => {
+    if(!drag) return;
+    let left = drag.left + e.clientX - drag.x;
+    let top = drag.top + e.clientY - drag.y;
+    const maxLeft = Math.max(8, window.innerWidth - panel.offsetWidth - 8);
+    const maxTop = Math.max(8, window.innerHeight - 48);
+    left = Math.min(Math.max(8, left), maxLeft);
+    top = Math.min(Math.max(8, top), maxTop);
+    panel.style.left = left + "px";
+    panel.style.top = top + "px";
+    state.left = left;
+    state.top = top;
+  });
+  const endDrag = e => {
+    if(!drag) return;
+    drag = null;
+    saveState();
+    try { head.releasePointerCapture(e.pointerId); } catch(err) {}
+  };
+  head.addEventListener("pointerup", endDrag);
+  head.addEventListener("pointercancel", endDrag);
+
   links.innerHTML = "";
   headings.forEach((h, i) => {
     const id = "guide-sec-" + i;
@@ -1113,7 +1178,7 @@ function renderGuide(){
       e.preventDefault();
       const target = document.getElementById(id);
       if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
-      closePanel();
+      setCollapsed(true);
     });
     links.appendChild(a);
   });
