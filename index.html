@@ -126,6 +126,33 @@
   .guide-box .hl{color:var(--gold2);font-weight:700}
   .guide-box ul{padding-left:20px}
   .guide-box li{margin:4px 0}
+  .guide-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:16px;align-items:start}
+  .guide-toc{
+    position:sticky;top:calc(var(--header-h,170px) + 12px);
+    max-height:calc(100vh - var(--header-h,170px) - 24px);overflow:auto;
+    background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px;
+  }
+  .guide-toc-title{color:var(--gold2);font-size:12px;font-weight:700;margin-bottom:6px}
+  .guide-toc a{
+    display:block;color:var(--dim);text-decoration:none;font-size:12px;line-height:1.6;
+    padding:5px 8px;border-radius:6px;border-left:2px solid transparent;
+  }
+  .guide-toc a:hover{color:var(--text);background:var(--card2)}
+  .guide-toc a.active{color:var(--gold2);background:var(--card);border-left-color:var(--gold)}
+  .guide-content{min-width:0}
+  .guide-content h2{scroll-margin-top:calc(var(--header-h,170px) + 18px)}
+  @media (max-width:720px){
+    .guide-layout{display:block}
+    .guide-toc{
+      top:var(--header-h,230px);z-index:30;max-height:none;overflow-x:auto;overflow-y:hidden;
+      white-space:nowrap;padding:8px 10px;margin:0 -16px 12px;border-left:none;border-right:none;
+      border-radius:0;background:rgba(14,17,22,.96);backdrop-filter:blur(8px);
+    }
+    .guide-toc-title{display:none}
+    .guide-toc a{display:inline-block;border-left:none;border-bottom:2px solid transparent;padding:5px 8px}
+    .guide-toc a.active{border-left:none;border-bottom-color:var(--gold)}
+    .guide-content h2{scroll-margin-top:calc(var(--header-h,230px) + 64px)}
+  }
   .mat-type{font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:10px;padding:1px 7px;margin-left:6px;flex:none}
   .used-in{font-size:11px;color:var(--green);margin-top:6px}
   .footer{
@@ -146,6 +173,16 @@
   }
   .sponsor-btn:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
   .sponsor-note{color:#5b6b7d;font-size:11px;margin-top:6px}
+  .sponsor-fab{
+    position:fixed;right:18px;bottom:18px;z-index:60;
+    background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
+    color:var(--gold2);border-radius:24px;padding:10px 16px;font-size:13px;cursor:pointer;
+    box-shadow:0 4px 20px rgba(0,0,0,.45);transition:.2s;
+  }
+  .sponsor-fab:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
+  @media (max-width:480px){
+    .sponsor-fab{right:12px;bottom:12px;padding:8px 12px;font-size:12px}
+  }
   .modal-mask{
     position:fixed;inset:0;background:rgba(8,10,14,.75);z-index:100;display:none;
     align-items:center;justify-content:center;padding:20px;
@@ -272,6 +309,8 @@
   </div>
 </main>
 <div class="toast" id="toast"></div>
+
+<button class="sponsor-fab" id="sponsorFab" aria-label="自愿赞助">☕ 赞助</button>
 
 <!-- 自愿赞助弹窗 -->
 <div class="modal-mask" id="sponsorModal">
@@ -828,6 +867,7 @@ const guide = `<h2>🏯 第一步：找悦灵城（官方新手任务 1）</h2>
 const $ = id => document.getElementById(id);
 const TAB_IDS = ["realms","alchemy","refine","craft","materials","guide"];
 let currentTab = "alchemy";
+let guideObserver = null;
 let alchemyFilter = "全部";
 let refineFilter = "全部";
 let matFilter = "全部";
@@ -988,8 +1028,61 @@ function renderMaterials(){
   $("matGrid").innerHTML = list.map(card).join("") || `<div style="color:var(--dim);padding:20px">没有找到匹配的材料</div>`;
   $("matCount").textContent = `共 ${list.length} 种材料`;
 }
+function syncHeaderHeight(){
+  const header = document.querySelector("header");
+  if(header){
+    document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+  }
+}
+window.addEventListener("resize", syncHeaderHeight);
+
 function renderGuide(){
-  $("guideBox").innerHTML = guide;
+  const box = $("guideBox");
+  box.innerHTML = `
+    <div class="guide-layout">
+      <aside class="guide-toc">
+        <div class="guide-toc-title">目录</div>
+        <div id="guideTocLinks"></div>
+      </aside>
+      <div class="guide-content" id="guideContent"></div>
+    </div>`;
+  const content = $("guideContent");
+  content.innerHTML = guide;
+  const headings = Array.from(content.querySelectorAll("h2"));
+  const links = $("guideTocLinks");
+  links.innerHTML = "";
+  headings.forEach((h, i) => {
+    const id = "guide-sec-" + i;
+    h.id = id;
+    let label = h.textContent.trim().replace(/^[^\u4e00-\u9fa5A-Za-z0-9]+/, "");
+    if(!label) label = "第 " + (i + 1) + " 节";
+    const a = document.createElement("a");
+    a.href = "#" + id;
+    a.textContent = label;
+    a.dataset.target = id;
+    a.addEventListener("click", e => {
+      e.preventDefault();
+      const target = document.getElementById(id);
+      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    links.appendChild(a);
+  });
+  syncHeaderHeight();
+  if(guideObserver) guideObserver.disconnect();
+  if("IntersectionObserver" in window && headings.length){
+    const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 170;
+    const setActive = id => {
+      links.querySelectorAll("a").forEach(a => a.classList.toggle("active", a.dataset.target === id));
+    };
+    guideObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, {rootMargin: `-${headerH + 20}px 0px -55% 0px`, threshold: 0});
+    headings.forEach(h => guideObserver.observe(h));
+  }
+  const first = links.querySelector("a");
+  if(first) first.classList.add("active");
 }
 
 function safeRender(fn){
@@ -1135,6 +1228,7 @@ window.addEventListener("hashchange", ()=>{
 (function(){
   var modal = document.getElementById('sponsorModal');
   var btn = document.getElementById('sponsorBtn');
+  var fab = document.getElementById('sponsorFab');
   var close = document.getElementById('sponsorClose');
   if(!modal || !btn) return;
   var qrLoaded = false;
@@ -1144,6 +1238,7 @@ window.addEventListener("hashchange", ()=>{
   }
   function hide(){ modal.classList.remove('show'); }
   btn.addEventListener('click', show);
+  if(fab) fab.addEventListener('click', show);
   close.addEventListener('click', hide);
   modal.addEventListener('click', function(e){ if(e.target === modal) hide(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') hide(); });
