@@ -126,32 +126,40 @@
   .guide-box .hl{color:var(--gold2);font-weight:700}
   .guide-box ul{padding-left:20px}
   .guide-box li{margin:4px 0}
-  .guide-layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:16px;align-items:start}
-  .guide-toc{
-    position:sticky;top:calc(var(--header-h,170px) + 12px);
-    max-height:calc(100vh - var(--header-h,170px) - 24px);overflow:auto;
-    background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px;
-  }
-  .guide-toc-title{color:var(--gold2);font-size:12px;font-weight:700;margin-bottom:6px}
-  .guide-toc a{
-    display:block;color:var(--dim);text-decoration:none;font-size:12px;line-height:1.6;
-    padding:5px 8px;border-radius:6px;border-left:2px solid transparent;
-  }
-  .guide-toc a:hover{color:var(--text);background:var(--card2)}
-  .guide-toc a.active{color:var(--gold2);background:var(--card);border-left-color:var(--gold)}
   .guide-content{min-width:0}
   .guide-content h2{scroll-margin-top:calc(var(--header-h,170px) + 18px)}
+  .guide-toc-toggle{
+    position:fixed;left:18px;bottom:76px;z-index:60;
+    background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
+    color:var(--gold2);border-radius:22px;padding:9px 14px;font-size:12px;cursor:pointer;
+    box-shadow:0 4px 20px rgba(0,0,0,.45);
+  }
+  .guide-toc-toggle.active{background:linear-gradient(135deg,#7a5318,#d4a94e);color:#1a1406}
+  .guide-toc-mask{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:65;display:none}
+  .guide-toc-mask.show{display:block}
+  .guide-toc-panel{
+    position:fixed;left:18px;bottom:132px;z-index:70;width:300px;max-height:60vh;
+    display:none;flex-direction:column;background:var(--card);border:1px solid var(--gold);
+    border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.55);overflow:hidden;
+  }
+  .guide-toc-panel.show{display:flex}
+  .guide-toc-head{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:10px 12px;border-bottom:1px solid var(--line);color:var(--gold2);font-size:12px;font-weight:700;
+  }
+  .guide-toc-close{background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:2px 6px}
+  .guide-toc-close:hover{color:var(--gold2)}
+  .guide-toc-links{overflow:auto;padding:6px}
+  .guide-toc-links a{
+    display:block;color:var(--dim);text-decoration:none;font-size:12px;line-height:1.6;
+    padding:6px 8px;border-radius:6px;border-left:2px solid transparent;
+  }
+  .guide-toc-links a:hover{color:var(--text);background:var(--card2)}
+  .guide-toc-links a.active{color:var(--gold2);background:var(--bg2);border-left-color:var(--gold)}
   @media (max-width:720px){
-    .guide-layout{display:block}
-    .guide-toc{
-      top:var(--header-h,230px);z-index:30;max-height:none;overflow-x:auto;overflow-y:hidden;
-      white-space:nowrap;padding:8px 10px;margin:0 -16px 12px;border-left:none;border-right:none;
-      border-radius:0;background:rgba(14,17,22,.96);backdrop-filter:blur(8px);
-    }
-    .guide-toc-title{display:none}
-    .guide-toc a{display:inline-block;border-left:none;border-bottom:2px solid transparent;padding:5px 8px}
-    .guide-toc a.active{border-left:none;border-bottom-color:var(--gold)}
-    .guide-content h2{scroll-margin-top:calc(var(--header-h,230px) + 64px)}
+    .guide-toc-toggle{left:12px;bottom:70px;padding:8px 12px;font-size:12px}
+    .guide-toc-panel{left:12px;right:12px;bottom:122px;width:auto;max-height:55vh}
+    .guide-content h2{scroll-margin-top:calc(var(--header-h,230px) + 18px)}
   }
   .mat-type{font-size:11px;color:var(--purple);border:1px solid var(--purple);border-radius:10px;padding:1px 7px;margin-left:6px;flex:none}
   .used-in{font-size:11px;color:var(--green);margin-top:6px}
@@ -174,14 +182,14 @@
   .sponsor-btn:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
   .sponsor-note{color:#5b6b7d;font-size:11px;margin-top:6px}
   .sponsor-fab{
-    position:fixed;right:18px;bottom:18px;z-index:60;
+    position:fixed;left:18px;right:auto;bottom:18px;z-index:60;
     background:linear-gradient(135deg,#3a2c10,#57401a);border:1px solid var(--gold);
     color:var(--gold2);border-radius:24px;padding:10px 16px;font-size:13px;cursor:pointer;
     box-shadow:0 4px 20px rgba(0,0,0,.45);transition:.2s;
   }
   .sponsor-fab:hover{background:linear-gradient(135deg,#4a3a12,#6a501f);transform:translateY(-1px)}
   @media (max-width:480px){
-    .sponsor-fab{right:12px;bottom:12px;padding:8px 12px;font-size:12px}
+    .sponsor-fab{left:12px;right:auto;bottom:12px;padding:8px 12px;font-size:12px}
   }
   .modal-mask{
     position:fixed;inset:0;background:rgba(8,10,14,.75);z-index:100;display:none;
@@ -1039,17 +1047,36 @@ window.addEventListener("resize", syncHeaderHeight);
 function renderGuide(){
   const box = $("guideBox");
   box.innerHTML = `
-    <div class="guide-layout">
-      <aside class="guide-toc">
-        <div class="guide-toc-title">目录</div>
-        <div id="guideTocLinks"></div>
-      </aside>
-      <div class="guide-content" id="guideContent"></div>
+    <div class="guide-content" id="guideContent"></div>
+    <button class="guide-toc-toggle" id="guideTocToggle" aria-expanded="false">☰ 目录</button>
+    <div class="guide-toc-mask" id="guideTocMask"></div>
+    <div class="guide-toc-panel" id="guideTocPanel">
+      <div class="guide-toc-head"><span>玩法目录</span><button class="guide-toc-close" id="guideTocClose">✕</button></div>
+      <div class="guide-toc-links" id="guideTocLinks"></div>
     </div>`;
   const content = $("guideContent");
   content.innerHTML = guide;
   const headings = Array.from(content.querySelectorAll("h2"));
   const links = $("guideTocLinks");
+  const panel = $("guideTocPanel");
+  const mask = $("guideTocMask");
+  const toggle = $("guideTocToggle");
+  const closeBtn = $("guideTocClose");
+  const closePanel = () => {
+    panel.classList.remove("show");
+    mask.classList.remove("show");
+    toggle.classList.remove("active");
+    toggle.setAttribute("aria-expanded", "false");
+  };
+  const openPanel = () => {
+    panel.classList.add("show");
+    mask.classList.add("show");
+    toggle.classList.add("active");
+    toggle.setAttribute("aria-expanded", "true");
+  };
+  toggle.addEventListener("click", () => panel.classList.contains("show") ? closePanel() : openPanel());
+  mask.addEventListener("click", closePanel);
+  closeBtn.addEventListener("click", closePanel);
   links.innerHTML = "";
   headings.forEach((h, i) => {
     const id = "guide-sec-" + i;
@@ -1064,6 +1091,7 @@ function renderGuide(){
       e.preventDefault();
       const target = document.getElementById(id);
       if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      closePanel();
     });
     links.appendChild(a);
   });
@@ -1221,6 +1249,17 @@ if(tabFromHash()){ try{ window.scrollTo(0, 0); }catch(e){} }
 window.addEventListener("hashchange", ()=>{
   const t = tabFromHash();
   if(t && t !== currentTab) showTab(t, false);
+});
+document.addEventListener("keydown", e => {
+  if(e.key !== "Escape") return;
+  const p = document.getElementById("guideTocPanel");
+  if(p && p.classList.contains("show")){
+    p.classList.remove("show");
+    const m = document.getElementById("guideTocMask");
+    const b = document.getElementById("guideTocToggle");
+    if(m) m.classList.remove("show");
+    if(b){ b.classList.remove("active"); b.setAttribute("aria-expanded", "false"); }
+  }
 });
 </script>
 <script>
